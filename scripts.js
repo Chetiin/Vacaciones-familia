@@ -42,8 +42,7 @@ const PHOTOS = [
     'fotos/Primos_037.jpeg',
     'fotos/Primos_038.jpeg',
     'fotos/Primos_039.jpeg',
-    'fotos/Primos_040.jpeg',
-    'fotos/Primos_041.jpeg'
+    'fotos/Primos_040.jpeg'
 ];
 
 // Variables para el sistema sin repeticiones
@@ -208,4 +207,5 @@ function resetPhotoCycle() {
     savePhotoState();
     console.log('🔄 Ciclo de fotos reiniciado');
     showPhotoOfDay();
+
 }

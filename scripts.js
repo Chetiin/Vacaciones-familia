@@ -45,16 +45,11 @@ const PHOTOS = [
     'fotos/Primos_040.jpeg'
 ];
 
-// Variables para el sistema sin repeticiones
-let usedPhotos = [];
-let lastPhotoDate = '';
-
 // INICIALIZACIÓN
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Página cargada - Fecha objetivo:', TRAVEL_DATE);
     console.log('Fecha actual:', new Date());
     
-    loadPhotoState(); // Cargar estado guardado
     updateCountdown();
     showPhotoOfDay();
     
@@ -93,119 +88,45 @@ function updateCountdown() {
     document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
 }
 
-// SISTEMA AVANZADO - FOTO DEL DÍA SIN REPETICIONES
+// SISTEMA POR FECHA - MISMA FOTO PARA TODOS CADA DÍA
 function showPhotoOfDay() {
     const today = new Date();
-    const todayString = today.toDateString(); // Formato: "Mon Nov 12 2025"
     
-    console.log('Fecha actual:', todayString);
-    console.log('Última fecha guardada:', lastPhotoDate);
-    console.log('Fotos usadas:', usedPhotos.length, '/', PHOTOS.length);
+    // Calcular días desde una fecha fija (ej: inicio del año)
+    const startDate = new Date(today.getFullYear(), 0, 1); // 1 de enero
+    const daysFromStart = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
     
-    // Si es un nuevo día, seleccionar nueva foto
-    if (todayString !== lastPhotoDate) {
-        selectNewPhotoForDay(todayString);
-    } else {
-        // Mismo día, mostrar la foto de hoy
-        showTodaysPhoto();
-    }
+    // Usar el día del año para seleccionar foto
+    const photoIndex = daysFromStart % PHOTOS.length;
+    const photoOfDay = PHOTOS[photoIndex];
+    
+    console.log(`📅 Día del año: ${daysFromStart}`);
+    console.log(`🖼️ Foto del día para todos: ${photoOfDay} (índice: ${photoIndex})`);
+    
+    displayPhoto(photoOfDay, today.toDateString(), daysFromStart + 1);
 }
 
-function selectNewPhotoForDay(todayString) {
-    // Si ya usamos todas las fotos, reiniciamos
-    if (usedPhotos.length >= PHOTOS.length) {
-        console.log('✅ Todas las fotos mostradas! Reiniciando ciclo...');
-        usedPhotos = [];
-    }
-    
-    // Fotos disponibles (las que no se han usado)
-    const availablePhotos = PHOTOS.filter(photo => !usedPhotos.includes(photo));
-    
-    if (availablePhotos.length === 0) {
-        console.log('❌ No hay fotos disponibles');
-        return;
-    }
-    
-    // Seleccionar una foto aleatoria de las disponibles
-    const randomIndex = Math.floor(Math.random() * availablePhotos.length);
-    const photoOfDay = availablePhotos[randomIndex];
-    
-    // Actualizar estado
-    usedPhotos.push(photoOfDay);
-    lastPhotoDate = todayString;
-    
-    // Guardar y mostrar
-    savePhotoState();
-    displayPhoto(photoOfDay, todayString);
-    
-    console.log(`🔄 Nueva foto del día: ${photoOfDay}`);
-    console.log(`📊 Progreso: ${usedPhotos.length}/${PHOTOS.length} fotos mostradas`);
-}
-
-function showTodaysPhoto() {
-    // La última foto usada es la de hoy
-    const todayString = new Date().toDateString();
-    const photoOfDay = usedPhotos[usedPhotos.length - 1];
-    
-    displayPhoto(photoOfDay, todayString);
-    console.log(`📷 Mostrando foto de hoy: ${photoOfDay}`);
-}
-
-function displayPhoto(photoPath, dateString) {
+function displayPhoto(photoPath, dateString, dayNumber) {
     const imgElement = document.getElementById('photo-of-day');
     const photoInfo = document.getElementById('photo-info');
+    
+    console.log('🔄 Cargando foto:', photoPath);
     
     imgElement.src = photoPath;
     imgElement.alt = `Foto del día - ${dateString}`;
     
     // Actualizar información
     if (photoInfo) {
-        photoInfo.textContent = `Foto ${usedPhotos.length} de ${PHOTOS.length} - ${dateString}`;
+        photoInfo.textContent = `Día ${dayNumber} - ${dateString}`;
     }
     
     // Manejar errores de carga de imagen
     imgElement.onerror = function() {
-        console.log('❌ Error cargando imagen, usando placeholder');
-        this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDYwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0Ij5JbWFnZW4gZGUgbGFzIHZhY2FjaW9uZXM8L3RleHQ+Cjwvc3ZnPg==';
+        console.log('❌ Error cargando imagen:', photoPath);
+        this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDYwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0Ij5FcnJvciBjYXJnYW5kbyBsYSBpbWFnZW48L3RleHQ+Cjwvc3ZnPg==';
     };
     
     imgElement.onload = function() {
         console.log('✅ Foto cargada correctamente');
     };
-}
-
-// GUARDAR Y CARGAR ESTADO
-function savePhotoState() {
-    const state = {
-        usedPhotos: usedPhotos,
-        lastPhotoDate: lastPhotoDate
-    };
-    localStorage.setItem('vacationPhotoState', JSON.stringify(state));
-    console.log('💾 Estado guardado');
-}
-
-function loadPhotoState() {
-    const saved = localStorage.getItem('vacationPhotoState');
-    if (saved) {
-        try {
-            const state = JSON.parse(saved);
-            usedPhotos = state.usedPhotos || [];
-            lastPhotoDate = state.lastPhotoDate || '';
-            console.log('📂 Estado cargado:', state);
-        } catch (e) {
-            console.log('❌ Error cargando estado, iniciando nuevo');
-            usedPhotos = [];
-            lastPhotoDate = '';
-        }
-    }
-}
-
-// FUNCIÓN EXTRA: Reiniciar ciclo manualmente (para pruebas)
-function resetPhotoCycle() {
-    usedPhotos = [];
-    lastPhotoDate = '';
-    savePhotoState();
-    console.log('🔄 Ciclo de fotos reiniciado');
-    showPhotoOfDay();
-
 }

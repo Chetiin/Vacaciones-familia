@@ -1,0 +1,227 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+header {
+    margin-bottom: 3rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.countdown-section {
+    margin-bottom: 3rem;
+}
+
+.countdown-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.countdown-item {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 2rem 1rem;
+    min-width: 120px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.countdown-number {
+    font-size: 3rem;
+    font-weight: bold;
+    display: block;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.countdown-label {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+.photo-section {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 800px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.photo-section h2 {
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.photo-container {
+    position: relative;
+}
+
+#photo-of-day {
+    max-width: 100%;
+    height: auto; /* Elimina la altura fija */
+    max-height: 600px; /* Límite máximo opcional */
+    object-fit: contain; /* Muestra toda la imagen */
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.photo-caption {
+    margin-top: 1rem;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+footer {
+    margin-top: 3rem;
+    padding: 2rem;
+    opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .countdown-container {
+        gap: 1rem;
+    }
+    
+    .countdown-item {
+        min-width: 80px;
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .countdown-number {
+        font-size: 2rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    #photo-of-day {
+        height: 300px;
+    }
+}
+.arrival-message {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    animation: pulse 2s infinite;
+}
+
+.arrival-message h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #ffeb3b;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.arrival-message p {
+    font-size: 1.5rem;
+    opacity: 0.9;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Asegurar que el contador se vea bien en móviles */
+@media (max-width: 768px) {
+    .arrival-message h2 {
+        font-size: 1.8rem;
+    }
+    
+    .arrival-message p {
+        font-size: 1.2rem;
+    }
+}
+
+/*BORRAR AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+/* Controles de navegación de fotos */
+.photo-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.photo-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.photo-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.photo-btn:active {
+    transform: translateY(0);
+}
+
+.photo-info {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .photo-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .photo-btn {
+        width: 200px;
+    }
+}
